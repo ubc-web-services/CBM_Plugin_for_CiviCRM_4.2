@@ -20,7 +20,7 @@ class CRM_Core_Payment_CBM extends CRM_Core_Payment {
 	
 	const	
 		TEST_AUTH_PORT = "8301",
-		TEST_PAYM_PORT = "8101",
+		TEST_PAYM_PORT = "",
 		LIVE_AUTH_PORT = "",
 		LIVE_PAYM_PORT = "";
 		
