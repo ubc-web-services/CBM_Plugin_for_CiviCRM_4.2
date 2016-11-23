@@ -1,0 +1,32 @@
+ If you want to have the CBM Unique Transaction ID available for CiviReports:
+
+ - Add set of custom fields called "UBC CBM"
+ - Create field called "CBM Unique ID"
+ 	- Used for Participants
+ 	- Alphanumeric / Text / Length 64 / Field Searchable / Active / View Only
+
+ - Look at database to get the name of the custom table.  Will be something like: civicrm_value_ubc_cbm_##
+ - Look at the table column names to get the name of cbm column. Will be something like: cbm_unique_id_##
+
+
+Create trigger on civicrm_cbm_trxn table that will set the custom field value.  For this example, my table name is civicrm_value_ubc_cbm_7 and my column name is cbm_unique_id_13
+
+
+
+
+DELIMITER $$
+CREATE TRIGGER update_trxn_num 
+AFTER UPDATE ON `civicrm_cbm_trxn`
+
+FOR EACH ROW
+
+BEGIN
+   INSERT INTO civicrm_value_ubc_cbm_7 (entity_id, cbm_unique_id_13) 
+   VALUES(NEW.participant_id, NEW.cbm_unique_id) 
+   ON DUPLICATE KEY UPDATE entity_id=NEW.participant_id, cbm_unique_id_13=NEW.cbm_unique_id;
+   
+END;
+$$
+DELIMITER ;   
+
+
