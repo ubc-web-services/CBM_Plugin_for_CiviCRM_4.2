@@ -26,9 +26,9 @@ into civicrm_config.php, above
 
 
 
-++++++
 TAGS!!
-++++++
+======
+
 Note: this project has tags that correspond with versions of CiviCRM
 
 tag: 4.6.8 is good up to CiviCRM 4.6.8
