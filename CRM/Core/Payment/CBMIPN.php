@@ -308,8 +308,7 @@ class CRM_Core_Payment_CBMIPN extends CRM_Core_Payment_BaseIPN {
         list($mode, $component, $paymentProcessorID, $duplicateTransaction) = self::getContext($privateData);
         $mode = ($mode)? 'test': 'live';
 
-        require_once 'CRM/Core/BAO/PaymentProcessor.php';
-        $paymentProcessor = CRM_Core_BAO_PaymentProcessor::getPayment($paymentProcessorID, $mode);
+        $paymentProcessor = CRM_Financial_BAO_PaymentProcessor::getPayment($paymentProcessorID, $mode);
         $ipn=& self::singleton($mode, $component, $paymentProcessor);
 	  		
 		if ($duplicateTransaction == 0) {

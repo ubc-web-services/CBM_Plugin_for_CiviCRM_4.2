@@ -6,6 +6,9 @@ Tested on CiviCRM 4.4.2 on Dec 6th, 2013 - Worked as expected - Dave K
 
 Tested on CiviCRM 4.6.8 on Sep 18th, 2015 - Worked as expected - Dave K
 
+Tested on CiviCRM 4.6.19 on Jan 25th, 2017 - Changes made, and project tagged (keep reading) - Dave K
+
+
 
 ######################################
 Error Occurring on CiviCRM version 4.6
@@ -20,3 +23,16 @@ into civicrm_config.php, above
 (aprox line 55) if ( defined( 'CIVICRM_CONFDIR' ) && ! isset( $confdir ) ) {
 
 ######################################
+
+
+
+++++++
+TAGS!!
+++++++
+Note: this project has tags that correspond with versions of CiviCRM
+
+tag: 4.6.8 is good up to CiviCRM 4.6.8
+
+tag: 4.6.19 has a small change for CiviCRM code base changes in 4.6.19.  This plugin has not been tested on versions in between 4.6.8 and 4.6.19
+
+
