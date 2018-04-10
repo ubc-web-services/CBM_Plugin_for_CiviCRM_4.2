@@ -1,1148 +1,1148 @@
 diff --git a/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php b/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php
-deleted file mode 100755
-index d7e3390..0000000
---- a/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php
-+++ /dev/null
-@@ -1,216 +0,0 @@
--<?php
--/*
-- * CBM Plugin Package v4 - Oct 10, 2012
-- */
--
--require_once 'CRM/Core/DAO.php';
--require_once 'CRM/Utils/Type.php';
--class CRM_Core_DAO_CbmTrxn extends CRM_Core_DAO {
--	
--	static $_tableName = 'civicrm_cbm_trxn';
--    static $_fields = null;
--    static $_links = null;
--    static $_import = null;
--    static $_export = null;
--    static $_log = false;
--    
--    public $id;
--    public $cbm_unique_id;
--    public $auth_url;
--    public $auth_port;
--    public $state;
--    public $amount;
--    public $contact_id;
--    public $contribution_id;
--    public $contributionType_id;
--    public $invoice_id;
--    public $component;
--    public $qfkey;
--    public $participant_id;
--    public $event_id;
--    public $membership_id;
--    public $notification_request_code;
--    public $continue_status_code;
--    
--    function __construct() {
--        $this->__table = 'civicrm_cbm_trxn';
--        parent::__construct();
--    }
--    
-- 	function links() {
--        if (!(self::$_links)) {
--            self::$_links = array(
--                'contribution_id' => 'civicrm_contribution:id',
--                'participant_id' => 'civicrm_participant:id',
--            	'event_id' => 'civicrm_event:id',
--            	'contact_id' => 'civicrm_contact:id',
--            );
--        }
--        return self::$_links;
--    }
--    
--    static function &fields() {
--        if (!(self::$_fields)) {
--            self::$_fields = array(
--                'id' => array(
--                    'name' => 'id',
--                    'type' => CRM_Utils_Type::T_INT,
--                    'required' => true,
--                ) ,
--                'cbm_unique_id' => array(
--                    'name' => 'cbm_unique_id',
--                    'type' => CRM_Utils_Type::T_STRING,
--                    'maxlength' => 45,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.name',
--                	'required' => true,
--                ) ,
--                'payment_num' => array(
--                    'name' => 'payment_num',
--                    'type' => CRM_Utils_Type::T_INT,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.payment_num',
--                	'required' => false,
--                ) ,
--                'auth_url' => array(
--                    'name' => 'auth_url',
--                    'type' => CRM_Utils_Type::T_STRING,
--                    'maxlength' => 64,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.auth_url',
--                	'required' => true,
--                ) ,
--                'auth_port' => array(
--                    'name' => 'auth_port',
--                    'type' => CRM_Utils_Type::T_INT,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.auth_port',
--                	'required' => true,
--                ) ,
--                'state' => array(
--                    'name' => 'state',
--                    'type' => CRM_Utils_Type::T_ENUM,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.state',
--                	'required' => true,
--                ) ,
--                'amount' => array(
--                    'name' => 'amount',
--                    'type' => CRM_Utils_Type::T_FLOAT,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.amount',
--                	'required' => true,
--                ) ,
--                'contact_id' => array(
--                    'name' => 'contact_id',
--                    'type' => CRM_Utils_Type::T_INT,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.contact_id',
--                	'required' => true,
--                ) ,
--                'contribution_id' => array(
--                    'name' => 'contribution_id',
--                    'type' => CRM_Utils_Type::T_INT,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.contribution_id',
--                	'required' => true,
--                ) ,
--                'contributionType_id' => array(
--                    'name' => 'contributionType_id',
--                    'type' => CRM_Utils_Type::T_INT,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.contributionType_id',
--                	'required' => true,
--                ) ,
--                'invoice_id' => array(
--                    'name' => 'invoice_id',
--                    'type' => CRM_Utils_Type::T_STRING,
--                	'maxlength' => 64,
--                    //'where' => 'civicrm_civicrm_cbm_trxn.invoice_id',
--                	'required' => true,
--                ) ,
--                'component' => array(
--                    'name' => 'component',
--                    'type' => CRM_Utils_Type::T_STRING,
--                    'maxlength' => 32,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.component',
--                	'required' => true,
--                ) ,
--                'qfkey' => array(
--                    'name' => 'qfkey',
--                    'type' => CRM_Utils_Type::T_STRING,
--                    'maxlength' => 64,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.qfkey',
--                	'required' => true,
--                ) ,
--                'participant_id' => array(
--                    'name' => 'participant_id',
--                    'type' => CRM_Utils_Type::T_INT,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.participant_id',
--                	'required' => false,
--                ) ,
--                'event_id' => array(
--                    'name' => 'event_id',
--                    'type' => CRM_Utils_Type::T_INT,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.event_id',
--                	'required' => false,
--                ) ,
--                'membership_id' => array(
--                    'name' => 'membership_id',
--                    'type' => CRM_Utils_Type::T_INT,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.membership_id',
--                	'required' => false,
--                ) ,
--                'notification_request_code' => array(
--                    'name' => 'notification_request_code',
--                    'type' => CRM_Utils_Type::T_INT,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.notification_request_code',
--                	'required' => false,
--                ) ,
--                'continue_status_code' => array(
--                    'name' => 'continue_status_code',
--                    'type' => CRM_Utils_Type::T_INT,
--                	//'where' => 'civicrm_civicrm_cbm_trxn.continue_status_code',
--                	'required' => false,
--                ) ,
--        	);
--        }
--        return self::$_fields;
--    }	
--	
--    static function getTableName() {
--        return self::$_tableName;
--    }
--    
--    function getLog() {
--        return self::$_log;
--    }
--
--  	function &import($prefix = false) {
--        if (!(self::$_import)) {
--            self::$_import = array();
--            $fields = & self::fields();
--            foreach($fields as $name => $field) {
--               
--            }
--        }
--        return self::$_import;
--    }
--
-- 	function &export($prefix = false) {
--        if (!(self::$_export)) {
--            self::$_export = array();
--            $fields = & self::fields();
--            foreach($fields as $name => $field) {
--
--            }
--        }
--        return self::$_export;
--    }
--    
--    
--    
--}
--
--
--
--
--
--
--
--
--
--
--
--
+new file mode 100755
+index 0000000..d7e3390
+--- /dev/null
++++ b/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php
+@@ -0,0 +1,216 @@
++<?php
++/*
++ * CBM Plugin Package v4 - Oct 10, 2012
++ */
++
++require_once 'CRM/Core/DAO.php';
++require_once 'CRM/Utils/Type.php';
++class CRM_Core_DAO_CbmTrxn extends CRM_Core_DAO {
++	
++	static $_tableName = 'civicrm_cbm_trxn';
++    static $_fields = null;
++    static $_links = null;
++    static $_import = null;
++    static $_export = null;
++    static $_log = false;
++    
++    public $id;
++    public $cbm_unique_id;
++    public $auth_url;
++    public $auth_port;
++    public $state;
++    public $amount;
++    public $contact_id;
++    public $contribution_id;
++    public $contributionType_id;
++    public $invoice_id;
++    public $component;
++    public $qfkey;
++    public $participant_id;
++    public $event_id;
++    public $membership_id;
++    public $notification_request_code;
++    public $continue_status_code;
++    
++    function __construct() {
++        $this->__table = 'civicrm_cbm_trxn';
++        parent::__construct();
++    }
++    
++ 	function links() {
++        if (!(self::$_links)) {
++            self::$_links = array(
++                'contribution_id' => 'civicrm_contribution:id',
++                'participant_id' => 'civicrm_participant:id',
++            	'event_id' => 'civicrm_event:id',
++            	'contact_id' => 'civicrm_contact:id',
++            );
++        }
++        return self::$_links;
++    }
++    
++    static function &fields() {
++        if (!(self::$_fields)) {
++            self::$_fields = array(
++                'id' => array(
++                    'name' => 'id',
++                    'type' => CRM_Utils_Type::T_INT,
++                    'required' => true,
++                ) ,
++                'cbm_unique_id' => array(
++                    'name' => 'cbm_unique_id',
++                    'type' => CRM_Utils_Type::T_STRING,
++                    'maxlength' => 45,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.name',
++                	'required' => true,
++                ) ,
++                'payment_num' => array(
++                    'name' => 'payment_num',
++                    'type' => CRM_Utils_Type::T_INT,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.payment_num',
++                	'required' => false,
++                ) ,
++                'auth_url' => array(
++                    'name' => 'auth_url',
++                    'type' => CRM_Utils_Type::T_STRING,
++                    'maxlength' => 64,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.auth_url',
++                	'required' => true,
++                ) ,
++                'auth_port' => array(
++                    'name' => 'auth_port',
++                    'type' => CRM_Utils_Type::T_INT,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.auth_port',
++                	'required' => true,
++                ) ,
++                'state' => array(
++                    'name' => 'state',
++                    'type' => CRM_Utils_Type::T_ENUM,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.state',
++                	'required' => true,
++                ) ,
++                'amount' => array(
++                    'name' => 'amount',
++                    'type' => CRM_Utils_Type::T_FLOAT,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.amount',
++                	'required' => true,
++                ) ,
++                'contact_id' => array(
++                    'name' => 'contact_id',
++                    'type' => CRM_Utils_Type::T_INT,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.contact_id',
++                	'required' => true,
++                ) ,
++                'contribution_id' => array(
++                    'name' => 'contribution_id',
++                    'type' => CRM_Utils_Type::T_INT,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.contribution_id',
++                	'required' => true,
++                ) ,
++                'contributionType_id' => array(
++                    'name' => 'contributionType_id',
++                    'type' => CRM_Utils_Type::T_INT,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.contributionType_id',
++                	'required' => true,
++                ) ,
++                'invoice_id' => array(
++                    'name' => 'invoice_id',
++                    'type' => CRM_Utils_Type::T_STRING,
++                	'maxlength' => 64,
++                    //'where' => 'civicrm_civicrm_cbm_trxn.invoice_id',
++                	'required' => true,
++                ) ,
++                'component' => array(
++                    'name' => 'component',
++                    'type' => CRM_Utils_Type::T_STRING,
++                    'maxlength' => 32,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.component',
++                	'required' => true,
++                ) ,
++                'qfkey' => array(
++                    'name' => 'qfkey',
++                    'type' => CRM_Utils_Type::T_STRING,
++                    'maxlength' => 64,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.qfkey',
++                	'required' => true,
++                ) ,
++                'participant_id' => array(
++                    'name' => 'participant_id',
++                    'type' => CRM_Utils_Type::T_INT,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.participant_id',
++                	'required' => false,
++                ) ,
++                'event_id' => array(
++                    'name' => 'event_id',
++                    'type' => CRM_Utils_Type::T_INT,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.event_id',
++                	'required' => false,
++                ) ,
++                'membership_id' => array(
++                    'name' => 'membership_id',
++                    'type' => CRM_Utils_Type::T_INT,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.membership_id',
++                	'required' => false,
++                ) ,
++                'notification_request_code' => array(
++                    'name' => 'notification_request_code',
++                    'type' => CRM_Utils_Type::T_INT,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.notification_request_code',
++                	'required' => false,
++                ) ,
++                'continue_status_code' => array(
++                    'name' => 'continue_status_code',
++                    'type' => CRM_Utils_Type::T_INT,
++                	//'where' => 'civicrm_civicrm_cbm_trxn.continue_status_code',
++                	'required' => false,
++                ) ,
++        	);
++        }
++        return self::$_fields;
++    }	
++	
++    static function getTableName() {
++        return self::$_tableName;
++    }
++    
++    function getLog() {
++        return self::$_log;
++    }
++
++  	function &import($prefix = false) {
++        if (!(self::$_import)) {
++            self::$_import = array();
++            $fields = & self::fields();
++            foreach($fields as $name => $field) {
++               
++            }
++        }
++        return self::$_import;
++    }
++
++ 	function &export($prefix = false) {
++        if (!(self::$_export)) {
++            self::$_export = array();
++            $fields = & self::fields();
++            foreach($fields as $name => $field) {
++
++            }
++        }
++        return self::$_export;
++    }
++    
++    
++    
++}
++
++
++
++
++
++
++
++
++
++
++
++
 diff --git a/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php
-deleted file mode 100755
-index b9a8b28..0000000
---- a/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php
-+++ /dev/null
-@@ -1,367 +0,0 @@
--<?php
--/*
-- * CBM Plugin Package v4 - Oct 10, 2012
-- */
--
--
--
--/**
-- *	Custom payment processor for UBC CBM
-- *	to be used with CiviCRM module for Drupal
-- *
-- */
--
--require_once 'CRM/Core/Payment.php';
--
--class CRM_Core_Payment_CBM extends CRM_Core_Payment {
--	
--	const
--		CHARSET  = 'iso-8859-1';
--	
--	const	
--		TEST_AUTH_PORT = "8301",
--		TEST_PAYM_PORT = "",
--		LIVE_AUTH_PORT = "",
--		LIVE_PAYM_PORT = "";
--		
--	const 		
--		AUTH_DIR = "/authServer/authenticate",
--		PAYM_DIR = "/creditcardservice/CreditCardPaymentForm";
--		
--	protected $_mode = null;
--	
--	private $_authport = null;
--	private $_paymport = null;
--	
--	static private $_singleton = null; 
--
--	/**
--	 * Constructor
--	 *
--	 * @param string $mode the mode of operation: live or test
--	 *
--	 * @return void
--	 */
--	function __construct( $mode, &$paymentProcessor ) {
--		ini_set('memory_limit', '512M');
--		$this->_mode             = $mode;
--		$this->_paymentProcessor = $paymentProcessor;
--		$this->_processorName    = ts('UBC CBM');
--			
--		$this->_authport = ($mode == 'live')? self::LIVE_AUTH_PORT: self::TEST_AUTH_PORT;
--		$this->_paymport = ($mode == 'live')? self::LIVE_PAYM_PORT: self::TEST_PAYM_PORT;
--	}
--	
--	
--	/** 
--     * singleton function used to manage this object 
--     * 
--     * @param string $mode the mode of operation: live or test
--     * 
--     * @return object 
--     * @static 
--     * */
--	static function &singleton($mode, &$paymentProcessor) {
--		$processorName = $paymentProcessor['name'];
--		if (self::$_singleton[$processorName] === NULL) {
--		  self::$_singleton[$processorName] = new CRM_Core_Payment_CBM($mode, $paymentProcessor);
--		}
--		return self::$_singleton[$processorName];
--	}
--
--	/**
--	 * Check for correct payment portal configuration
--	 */	
--	function checkConfig() {
--       $config = CRM_Core_Config::singleton( );
--
--        $error = array( );
--
--        if (empty($this->_paymentProcessor['user_name'])) {
--            $error[] = ts('Merchant ID is not set in the Administer CiviCRM &raquo; Payment Processor.');
--        }
--        if (empty($this->_paymentProcessor['password'])) {
--            $error[] = ts('Password is not set in the Administer CiviCRM &raquo; Payment Processor.');
--        }
--        
--        if (!empty($error)) {
--            return implode('<p>', $error);
--        }
--
--        return null;
--	}
--	
--	
--	/**
--	 * Creates a unique transaction ID for this purchase
--	 * Requests Master Ticket from CBM Authentication Server
--	 * Requests Session Ticket from CBM Authentication Server
--	 * Posts transaction details to the CBM WS who takes over transaction
--	 *
--	 * @param  array $params assoc array of input parameters for this transaction
--	 * @return array the result in an nice formatted array (or an error object)
--	 *
--	 */
--	function doTransferCheckout(&$params, $component) {
--
--		$component = strtolower($component);
--        $config = CRM_Core_Config::singleton();
--        
--        if ($component != 'contribute' && $component != 'event') {
--            CRM_Core_Error::fatal(ts('Component is invalid'));
--        }
--        
--        //Acquire all required urls for response or cancellation from payment
--        if ($component == 'event') {
--        	$cancelURL = CRM_Utils_System::url( 'civicrm/event/register',
--                                                "_qf_Confirm_display=true&qfKey={$params['qfKey']}", 
--                                                false, null, false );
--        } 
--        else if ($component == 'contribute') {
--            $cancelURL = CRM_Utils_System::url( 'civicrm/contribute/transact',
--                                                "_qf_Confirm_display=true&qfKey={$params['qfKey']}", 
--                                                false, null, false );
--        }		
--
--       	
--        $notifyURL = $config->userFrameworkResourceURL."extern/cbmNotify.php";
--        $continueURL = $config->userFrameworkResourceURL."extern/cbmContinue.php";
--        $urls = array('cancel' => $cancelURL, 'notify' => $notifyURL, 'continue' => $continueURL);
--
--        
--		//get master and session tickets from CBM auth server
--		$auth = $this->getCbmTicketsFromAuthServer();
--		if (isset($auth['master']) && isset($auth['session'])) {
--
--			//make payment request
--			$result = $this->postPaymentRequest($auth, $params, $urls, $component);
--		}	
--		else {
--			CRM_Core_Error::fatal(ts('Unable to obtain authentication from UBC CBM. ('.$auth['string'].')'), $auth['code']);
--		}	
--	}
--	
--	/**
--	 * Acquire Master Ticket and Session Ticket from Auth Server
--	 * 
--	 * 
--	 * @return  $array['master']
--	 * 			$array['session']
--	 * 			
--	 * 			OR array containing error response
--	 * 			$error['string']
--	 * 			$error['code']
--	 */
--	private function getCbmTicketsFromAuthServer() {
--		
--		$errMsg = array();
--		$auth_url = $this->_paymentProcessor['url_site'];
--		$auth_port = $this->_authport;
--		
--		//Master
--		$masterFormData = array("userID" => $this->_paymentProcessor['user_name'],
--   		       				   	 "credential" => $this->_paymentProcessor['password'],
--   		       				     "function"   => "authenticate" );
--   		       		 
--   		       				     
--	    $masterTicketResponse = self::hlp_sendPost($auth_url, $auth_port, $masterFormData, $errMsg);
--	    //parse response to get the response code and auth ticket from the xml portion
--	    $masterTicketResponseFields = self::hlp_extract_params_from_XML($masterTicketResponse, array('response-code','auth-ticket'));
--	    if ($masterTicketResponseFields['response-code'] == 100 && isset($masterTicketResponseFields['auth-ticket'])) {
--		    	
--		    //Session
--		    $masterTicket = $masterTicketResponseFields['auth-ticket']; 
--		    $sessionFormData = array("function" => "getSessionTicket",
--	                    		   	  "authTicket" => "$masterTicket",
--	   		           			      "creditcard" => "checked" );
--		    $sessionTicketResponse = self::hlp_sendPost($auth_url, $auth_port, $sessionFormData, $errMsg);
--			//CRM_Core_Error::debug("master ticket response", $sessionTicketResponse);
--		    //parse response to get response code
--		    $sessionTicketResponseFields = self::hlp_extract_params_from_XML($sessionTicketResponse, array('response-code'));
--		    if ($sessionTicketResponseFields['response-code'] == 100) {
--
--		    	//extract session ticket
--		    	$sessionTicket = self::hlp_extract_session_ticket_from_response($sessionTicketResponse);
--    			$result = array('master' => $masterTicket, 'session' => $sessionTicket);
--				return $result;
--		    }
--	    }
--	    
--	    return $errMsg;
--	}
--	
--	/**
--	 * Helper function that sends post request to CBM
--	 * authentication server to attempt to retrieve tickets
--	 * 
--	 * @param string $auth_url
--	 * @param array $formdata
--	 * @param array $errMsg
--	 * @return the return value from auth server | false
--	 * 				
--	 */
--	static function hlp_sendPost($auth_url, $auth_port, $formdata, &$errMsg="") {
--		
--		$result = "";
--		$ssl = false;
--		
--		if (strstr($auth_url, 'https://')) {
--			$auth_url = substr($auth_url, strlen('https://'));
--			$ssl = true;
--		}
--		else if (strstr($auth_url, 'http://')) {
--			$auth_url = substr($auth_url, strlen('http://'));
--		}
--		
--		//create connection
--		if($ssl) $fp = fsockopen("ssl://".$auth_url, 443, $errno, $errstr, 30);
--		else $fp = fsockopen($auth_url, $auth_port, $errno, $errstr, 30);
--			
--			
--		if($fp) {	
--	    	//build the post string
--			$poststring = '';
--		    foreach($formdata as $key => $val) {
--		    	$poststring .= urlencode($key) . "=" . urlencode($val) . "&";
--		    }
--		    
--		    $out = "POST ". self::AUTH_DIR ." HTTP/1.1\r\n";
--		    $out .= "Host: ". $_SERVER['HTTP_HOST']."\r\n";
--		    $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
--		    $out .= "Content-Length: " . strlen($poststring) . "\r\n";
--		    $out .= "Connection: Close\r\n\r\n";
--		    
--		    
--		    //Send the headers and post data to CBM
--		    fwrite($fp, $out.$poststring);
--		    while (!feof($fp)) {
--		    	$result .= fgets($fp, 1024);
--		    }
--		    fclose($fp);
--		    return $result;
--		}
-- 
--		$errMsg['string'] = $errstr;
--		$errMsg['code'] = $errno; 
--		return false;
--	}
--	
--	/**
--	 * Helper function for extracting fields from xml string
--	 * 
--	 * @param String $data
--	 * @param array $xmlFieldNames
--	 */
--	static function hlp_extract_params_from_XML($data, $xmlFieldNames) {
--		
--		$parsedXML = array();
--		foreach ($xmlFieldNames as $xmlField) {
--
--		  	if(strpos($data, $xmlField)!==false) {
--		    	$parsedXML[$xmlField] = substr($data, strpos($data,"<$xmlField>")+strlen("<$xmlField>"),
--		  	               strpos($data, "</$xmlField>") - strlen("<$xmlField>") - strpos($data,"<$xmlField>"));
--		  	}
--		}
--		return $parsedXML;
--	}
--	
--	/**
--	 * Helper function for extracting the session ticket from the reponse data
--	 * 
--	 * Enter description here ...
--	 * @param String $data
--	 */
--	static function hlp_extract_session_ticket_from_response($data) {
--	
--	    $parsedXML = substr($data, strpos($data, "<auth-ticket name=\"creditcard\">")
--	    					+strlen("<auth-ticket name=\"creditcard\">"),
--	    					strpos($data, "</auth-ticket>") - strlen("<auth-ticket name=\"creditcard\">") 
--	    					- strpos($data,"<auth-ticket name=\"creditcard\">"));
--	
--	  	return $parsedXML;
--	}	
--	
--	/**
--	 * Sends a post request to CBM WS
--	 * 
--	 * @param array $tickets
--	 * @param array $args
--	 * @param array $urls
--	 */
--	private function postPaymentRequest(&$tickets, &$params, &$urls, $component) {
--		
--		//Create a unique Transaction ID
--		$unique_str = $params['participantID'].$params['eventID'].time();
--		$txn_id = md5($unique_str);
--		
--		$amount = str_replace(",","", number_format($params['amount'],2));
--               
--        if ($component == 'event') {
--            $merchantRef = "Event Registration";   
--            $membershipID = null;         
--        } 
--        elseif ($component == 'contribute') {
--        	$merchantRef = "Charitable Contribution";
--            $membershipID = CRM_Utils_Array::value('membershipID', $params);
--        }		
--
--        //Insert row for this transaction
--        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, auth_url, auth_port, state, amount, contact_id, 
--        										contribution_id, contributionType_id, invoice_id, component, 
--        										qfkey, participant_id, event_id, membership_id) 
--        			VALUES ('{$txn_id}', '{$this->_paymentProcessor['url_site']}', 
--        					'{$this->_authport}', 'PYMT_REQUESTED', '{$amount}', '{$params['contactID']}', 
--        					'{$params['contributionID']}', '{$params['contributionTypeID']}', '{$params['invoiceID']}', '{$component}', 
--        					'{$params['qfKey']}', '{$params['participantID']}', '{$params['eventID']}', '{$membershipID}')";
--        
--        $daoInsert = & CRM_Core_DAO::executeQuery($query);
--        
--		
--		//payment request params
--		$formdata = array(  'SRCE_REF_NO' => "1",
--	         				'SRCE_TYP_CD' => $this->_paymentProcessor['signature'],
--	         				'TRAN_AMOUNT' => $amount,
--	              			'TICKET' => $tickets['session'],
--	   						'MERCHANT_TRANS_ID' => $txn_id,
--	   						'ITEM_DESCRIPTION' => $merchantRef,
--	          				'NOTIFY_URL' => $urls['notify'],		
--	        				'CONTINUE_URL' => $urls['continue'],
--							'GL_ACCT_CD'=>$this->_paymentProcessor['subject']);	
--		
--		//build the post string
--		$poststring = '';
--		foreach($formdata as $key => $val) {
--			$poststring .= urlencode($key)."=".urlencode($val)."&";
--		}
--		
--		//Build CBM WS URL with LFS transaction data
--		$paym_url = $this->_paymentProcessor['url_api'];
--		$cbmurl = $paym_url.":".$this->_paymport.self::PAYM_DIR."?".$poststring;
--		
--		//redirect to CBM
--		CRM_Utils_System::redirect($cbmurl);
--	}
--	
--    function setExpressCheckOut( &$params ) {
--        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) ); 
--    }
--    function getExpressCheckoutDetails( $token ) {
--        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) ); 
--    }
--    function doExpressCheckout( &$params ) {
--        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) ); 
--    }
--
--    function doDirectPayment( &$params ) {
--        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) );
--    }
--	
--	
--	
--	
--	
--	
--	
--	
--
--}
+new file mode 100755
+index 0000000..b9a8b28
+--- /dev/null
++++ b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php
+@@ -0,0 +1,367 @@
++<?php
++/*
++ * CBM Plugin Package v4 - Oct 10, 2012
++ */
++
++
++
++/**
++ *	Custom payment processor for UBC CBM
++ *	to be used with CiviCRM module for Drupal
++ *
++ */
++
++require_once 'CRM/Core/Payment.php';
++
++class CRM_Core_Payment_CBM extends CRM_Core_Payment {
++	
++	const
++		CHARSET  = 'iso-8859-1';
++	
++	const	
++		TEST_AUTH_PORT = "8301",
++		TEST_PAYM_PORT = "",
++		LIVE_AUTH_PORT = "",
++		LIVE_PAYM_PORT = "";
++		
++	const 		
++		AUTH_DIR = "/authServer/authenticate",
++		PAYM_DIR = "/creditcardservice/CreditCardPaymentForm";
++		
++	protected $_mode = null;
++	
++	private $_authport = null;
++	private $_paymport = null;
++	
++	static private $_singleton = null; 
++
++	/**
++	 * Constructor
++	 *
++	 * @param string $mode the mode of operation: live or test
++	 *
++	 * @return void
++	 */
++	function __construct( $mode, &$paymentProcessor ) {
++		ini_set('memory_limit', '512M');
++		$this->_mode             = $mode;
++		$this->_paymentProcessor = $paymentProcessor;
++		$this->_processorName    = ts('UBC CBM');
++			
++		$this->_authport = ($mode == 'live')? self::LIVE_AUTH_PORT: self::TEST_AUTH_PORT;
++		$this->_paymport = ($mode == 'live')? self::LIVE_PAYM_PORT: self::TEST_PAYM_PORT;
++	}
++	
++	
++	/** 
++     * singleton function used to manage this object 
++     * 
++     * @param string $mode the mode of operation: live or test
++     * 
++     * @return object 
++     * @static 
++     * */
++	static function &singleton($mode, &$paymentProcessor) {
++		$processorName = $paymentProcessor['name'];
++		if (self::$_singleton[$processorName] === NULL) {
++		  self::$_singleton[$processorName] = new CRM_Core_Payment_CBM($mode, $paymentProcessor);
++		}
++		return self::$_singleton[$processorName];
++	}
++
++	/**
++	 * Check for correct payment portal configuration
++	 */	
++	function checkConfig() {
++       $config = CRM_Core_Config::singleton( );
++
++        $error = array( );
++
++        if (empty($this->_paymentProcessor['user_name'])) {
++            $error[] = ts('Merchant ID is not set in the Administer CiviCRM &raquo; Payment Processor.');
++        }
++        if (empty($this->_paymentProcessor['password'])) {
++            $error[] = ts('Password is not set in the Administer CiviCRM &raquo; Payment Processor.');
++        }
++        
++        if (!empty($error)) {
++            return implode('<p>', $error);
++        }
++
++        return null;
++	}
++	
++	
++	/**
++	 * Creates a unique transaction ID for this purchase
++	 * Requests Master Ticket from CBM Authentication Server
++	 * Requests Session Ticket from CBM Authentication Server
++	 * Posts transaction details to the CBM WS who takes over transaction
++	 *
++	 * @param  array $params assoc array of input parameters for this transaction
++	 * @return array the result in an nice formatted array (or an error object)
++	 *
++	 */
++	function doTransferCheckout(&$params, $component) {
++
++		$component = strtolower($component);
++        $config = CRM_Core_Config::singleton();
++        
++        if ($component != 'contribute' && $component != 'event') {
++            CRM_Core_Error::fatal(ts('Component is invalid'));
++        }
++        
++        //Acquire all required urls for response or cancellation from payment
++        if ($component == 'event') {
++        	$cancelURL = CRM_Utils_System::url( 'civicrm/event/register',
++                                                "_qf_Confirm_display=true&qfKey={$params['qfKey']}", 
++                                                false, null, false );
++        } 
++        else if ($component == 'contribute') {
++            $cancelURL = CRM_Utils_System::url( 'civicrm/contribute/transact',
++                                                "_qf_Confirm_display=true&qfKey={$params['qfKey']}", 
++                                                false, null, false );
++        }		
++
++       	
++        $notifyURL = $config->userFrameworkResourceURL."extern/cbmNotify.php";
++        $continueURL = $config->userFrameworkResourceURL."extern/cbmContinue.php";
++        $urls = array('cancel' => $cancelURL, 'notify' => $notifyURL, 'continue' => $continueURL);
++
++        
++		//get master and session tickets from CBM auth server
++		$auth = $this->getCbmTicketsFromAuthServer();
++		if (isset($auth['master']) && isset($auth['session'])) {
++
++			//make payment request
++			$result = $this->postPaymentRequest($auth, $params, $urls, $component);
++		}	
++		else {
++			CRM_Core_Error::fatal(ts('Unable to obtain authentication from UBC CBM. ('.$auth['string'].')'), $auth['code']);
++		}	
++	}
++	
++	/**
++	 * Acquire Master Ticket and Session Ticket from Auth Server
++	 * 
++	 * 
++	 * @return  $array['master']
++	 * 			$array['session']
++	 * 			
++	 * 			OR array containing error response
++	 * 			$error['string']
++	 * 			$error['code']
++	 */
++	private function getCbmTicketsFromAuthServer() {
++		
++		$errMsg = array();
++		$auth_url = $this->_paymentProcessor['url_site'];
++		$auth_port = $this->_authport;
++		
++		//Master
++		$masterFormData = array("userID" => $this->_paymentProcessor['user_name'],
++   		       				   	 "credential" => $this->_paymentProcessor['password'],
++   		       				     "function"   => "authenticate" );
++   		       		 
++   		       				     
++	    $masterTicketResponse = self::hlp_sendPost($auth_url, $auth_port, $masterFormData, $errMsg);
++	    //parse response to get the response code and auth ticket from the xml portion
++	    $masterTicketResponseFields = self::hlp_extract_params_from_XML($masterTicketResponse, array('response-code','auth-ticket'));
++	    if ($masterTicketResponseFields['response-code'] == 100 && isset($masterTicketResponseFields['auth-ticket'])) {
++		    	
++		    //Session
++		    $masterTicket = $masterTicketResponseFields['auth-ticket']; 
++		    $sessionFormData = array("function" => "getSessionTicket",
++	                    		   	  "authTicket" => "$masterTicket",
++	   		           			      "creditcard" => "checked" );
++		    $sessionTicketResponse = self::hlp_sendPost($auth_url, $auth_port, $sessionFormData, $errMsg);
++			//CRM_Core_Error::debug("master ticket response", $sessionTicketResponse);
++		    //parse response to get response code
++		    $sessionTicketResponseFields = self::hlp_extract_params_from_XML($sessionTicketResponse, array('response-code'));
++		    if ($sessionTicketResponseFields['response-code'] == 100) {
++
++		    	//extract session ticket
++		    	$sessionTicket = self::hlp_extract_session_ticket_from_response($sessionTicketResponse);
++    			$result = array('master' => $masterTicket, 'session' => $sessionTicket);
++				return $result;
++		    }
++	    }
++	    
++	    return $errMsg;
++	}
++	
++	/**
++	 * Helper function that sends post request to CBM
++	 * authentication server to attempt to retrieve tickets
++	 * 
++	 * @param string $auth_url
++	 * @param array $formdata
++	 * @param array $errMsg
++	 * @return the return value from auth server | false
++	 * 				
++	 */
++	static function hlp_sendPost($auth_url, $auth_port, $formdata, &$errMsg="") {
++		
++		$result = "";
++		$ssl = false;
++		
++		if (strstr($auth_url, 'https://')) {
++			$auth_url = substr($auth_url, strlen('https://'));
++			$ssl = true;
++		}
++		else if (strstr($auth_url, 'http://')) {
++			$auth_url = substr($auth_url, strlen('http://'));
++		}
++		
++		//create connection
++		if($ssl) $fp = fsockopen("ssl://".$auth_url, 443, $errno, $errstr, 30);
++		else $fp = fsockopen($auth_url, $auth_port, $errno, $errstr, 30);
++			
++			
++		if($fp) {	
++	    	//build the post string
++			$poststring = '';
++		    foreach($formdata as $key => $val) {
++		    	$poststring .= urlencode($key) . "=" . urlencode($val) . "&";
++		    }
++		    
++		    $out = "POST ". self::AUTH_DIR ." HTTP/1.1\r\n";
++		    $out .= "Host: ". $_SERVER['HTTP_HOST']."\r\n";
++		    $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
++		    $out .= "Content-Length: " . strlen($poststring) . "\r\n";
++		    $out .= "Connection: Close\r\n\r\n";
++		    
++		    
++		    //Send the headers and post data to CBM
++		    fwrite($fp, $out.$poststring);
++		    while (!feof($fp)) {
++		    	$result .= fgets($fp, 1024);
++		    }
++		    fclose($fp);
++		    return $result;
++		}
++ 
++		$errMsg['string'] = $errstr;
++		$errMsg['code'] = $errno; 
++		return false;
++	}
++	
++	/**
++	 * Helper function for extracting fields from xml string
++	 * 
++	 * @param String $data
++	 * @param array $xmlFieldNames
++	 */
++	static function hlp_extract_params_from_XML($data, $xmlFieldNames) {
++		
++		$parsedXML = array();
++		foreach ($xmlFieldNames as $xmlField) {
++
++		  	if(strpos($data, $xmlField)!==false) {
++		    	$parsedXML[$xmlField] = substr($data, strpos($data,"<$xmlField>")+strlen("<$xmlField>"),
++		  	               strpos($data, "</$xmlField>") - strlen("<$xmlField>") - strpos($data,"<$xmlField>"));
++		  	}
++		}
++		return $parsedXML;
++	}
++	
++	/**
++	 * Helper function for extracting the session ticket from the reponse data
++	 * 
++	 * Enter description here ...
++	 * @param String $data
++	 */
++	static function hlp_extract_session_ticket_from_response($data) {
++	
++	    $parsedXML = substr($data, strpos($data, "<auth-ticket name=\"creditcard\">")
++	    					+strlen("<auth-ticket name=\"creditcard\">"),
++	    					strpos($data, "</auth-ticket>") - strlen("<auth-ticket name=\"creditcard\">") 
++	    					- strpos($data,"<auth-ticket name=\"creditcard\">"));
++	
++	  	return $parsedXML;
++	}	
++	
++	/**
++	 * Sends a post request to CBM WS
++	 * 
++	 * @param array $tickets
++	 * @param array $args
++	 * @param array $urls
++	 */
++	private function postPaymentRequest(&$tickets, &$params, &$urls, $component) {
++		
++		//Create a unique Transaction ID
++		$unique_str = $params['participantID'].$params['eventID'].time();
++		$txn_id = md5($unique_str);
++		
++		$amount = str_replace(",","", number_format($params['amount'],2));
++               
++        if ($component == 'event') {
++            $merchantRef = "Event Registration";   
++            $membershipID = null;         
++        } 
++        elseif ($component == 'contribute') {
++        	$merchantRef = "Charitable Contribution";
++            $membershipID = CRM_Utils_Array::value('membershipID', $params);
++        }		
++
++        //Insert row for this transaction
++        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, auth_url, auth_port, state, amount, contact_id, 
++        										contribution_id, contributionType_id, invoice_id, component, 
++        										qfkey, participant_id, event_id, membership_id) 
++        			VALUES ('{$txn_id}', '{$this->_paymentProcessor['url_site']}', 
++        					'{$this->_authport}', 'PYMT_REQUESTED', '{$amount}', '{$params['contactID']}', 
++        					'{$params['contributionID']}', '{$params['contributionTypeID']}', '{$params['invoiceID']}', '{$component}', 
++        					'{$params['qfKey']}', '{$params['participantID']}', '{$params['eventID']}', '{$membershipID}')";
++        
++        $daoInsert = & CRM_Core_DAO::executeQuery($query);
++        
++		
++		//payment request params
++		$formdata = array(  'SRCE_REF_NO' => "1",
++	         				'SRCE_TYP_CD' => $this->_paymentProcessor['signature'],
++	         				'TRAN_AMOUNT' => $amount,
++	              			'TICKET' => $tickets['session'],
++	   						'MERCHANT_TRANS_ID' => $txn_id,
++	   						'ITEM_DESCRIPTION' => $merchantRef,
++	          				'NOTIFY_URL' => $urls['notify'],		
++	        				'CONTINUE_URL' => $urls['continue'],
++							'GL_ACCT_CD'=>$this->_paymentProcessor['subject']);	
++		
++		//build the post string
++		$poststring = '';
++		foreach($formdata as $key => $val) {
++			$poststring .= urlencode($key)."=".urlencode($val)."&";
++		}
++		
++		//Build CBM WS URL with LFS transaction data
++		$paym_url = $this->_paymentProcessor['url_api'];
++		$cbmurl = $paym_url.":".$this->_paymport.self::PAYM_DIR."?".$poststring;
++		
++		//redirect to CBM
++		CRM_Utils_System::redirect($cbmurl);
++	}
++	
++    function setExpressCheckOut( &$params ) {
++        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) ); 
++    }
++    function getExpressCheckoutDetails( $token ) {
++        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) ); 
++    }
++    function doExpressCheckout( &$params ) {
++        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) ); 
++    }
++
++    function doDirectPayment( &$params ) {
++        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) );
++    }
++	
++	
++	
++	
++	
++	
++	
++	
++
++}
 diff --git a/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php
-deleted file mode 100755
-index 7bebafb..0000000
---- a/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php
-+++ /dev/null
-@@ -1,427 +0,0 @@
--<?php
--/*
-- * CBM Plugin Package v4 - Oct 10, 2012
-- */
--
--
--require_once 'CRM/Core/Payment/BaseIPN.php';
--
--class CRM_Core_Payment_CBMIPN extends CRM_Core_Payment_BaseIPN {
--
--    /**
--     * We only need one instance of this object. So we use the singleton
--     * pattern and cache the instance in this variable
--     *
--     * @var object
--     */
--    static private $_singleton = null;
--
--    /**
--     * mode of operation: live or test
--     *
--     * @var object
--     */
--    static protected $_mode = null;
--
--
--    /** 
--     * Constructor 
--     * 
--     * @param string $mode the mode of operation: live or test
--     * @return void 
--     */ 
--    function __construct( $mode, &$paymentProcessor ) {
--        parent::__construct( );
--        
--        $this->_mode = $mode;
--        $this->_paymentProcessor = $paymentProcessor;
--    }
--
--    /**  
--     * singleton function used to manage this object  
--     *  
--     * @param string $mode the mode of operation: live or test
--     *  
--     * @return object  
--     */  
--    static function &singleton( $mode, $component, &$paymentProcessor ) {
--        if ( self::$_singleton === null ) {
--            self::$_singleton = new CRM_Core_Payment_CBMIPN( $mode, $paymentProcessor );
--        }
--        return self::$_singleton;
--    }
--
--	/**
--     * This function is not processor specific (taken from PaymentExpressIPN)
--     * The function gets called when a new order takes place.
--	 * 
--	 * @param $success
--	 * @param $privateData
--	 * @param $component
--	 * @param $amount
--	 * @param $transactionReference
--	 */
--    function newOrderNotify( $success, $privateData, $component,$amount,$transactionReference ) {
--        $ids = $input = $params = array( );
--        
--        $input['component'] = strtolower($component);
--
--        $ids['contact']          = self::retrieve( 'contactID'     , 'Integer', $privateData, true );
--        $ids['contribution']     = self::retrieve( 'contributionID', 'Integer', $privateData, true );
--
--        if ( $input['component'] == "event" ) {
--            $ids['event']       = self::retrieve( 'eventID'      , 'Integer', $privateData, true );
--            $ids['participant'] = self::retrieve( 'participantID', 'Integer', $privateData, true );
--            $ids['membership']  = null;
--        } else {
--            $ids['membership'] = self::retrieve( 'membershipID'  , 'Integer', $privateData, false );
--        }
--        $ids['contributionRecur'] = $ids['contributionPage'] = null;
--
--        if ( ! $this->validateData( $input, $ids, $objects ) ) {
--            return false;
--        }
--
--        // make sure the invoice is valid and matches what we have in the contribution record
--        $input['invoice']    =  $privateData['invoiceID'];
--        $input['newInvoice'] =  $transactionReference;
--        $contribution        =& $objects['contribution'];
--		$input['trxn_id']  =	$transactionReference;
--		
--        if ( $contribution->invoice_id != $input['invoice'] ) {
--            CRM_Core_Error::debug_log_message( "Invoice values dont match between database and IPN request" );
--            echo "Failure: Invoice values dont match between database and IPN request<p>";
--            return;
--        }
--
--        // lets replace invoice-id with Payment Processor -number because thats what is common and unique 
--        // in subsequent calls or notifications sent by google.
--        $contribution->invoice_id = $input['newInvoice'];
--
--        $input['amount'] = $amount;
--        
--        if ( $contribution->total_amount != $input['amount'] ) {
--            CRM_Core_Error::debug_log_message( "Amount values dont match between database and IPN request" );
--            echo "Failure: Amount values dont match between database and IPN request. ".$contribution->total_amount."/".$input['amount']."<p>";
--            return;
--        }
--
--        require_once 'CRM/Core/Transaction.php';
--        $transaction = new CRM_Core_Transaction( );
--
--        // check if contribution is already completed, if so we ignore this ipn
--        if ( $contribution->contribution_status_id == 1 ) {
--            CRM_Core_Error::debug_log_message( "returning since contribution has already been handled" );
--            echo "Success: Contribution has already been handled<p>";
--            return true;
--        } else {
--            /* Since trxn_id hasn't got any use here, 
--             * lets make use of it by passing the eventID/membershipTypeID to next level.
--             * And change trxn_id to the payment processor reference before finishing db update */
--            if ( $ids['event'] ) {
--                $contribution->trxn_id =
--                    $ids['event']       . CRM_Core_DAO::VALUE_SEPARATOR .
--                    $ids['participant'] ;
--            } else {
--                $contribution->trxn_id = $ids['membership'];
--            }
--        }
--        $this->completeTransaction ( $input, $ids, $objects, $transaction);
--        return true;
--    }
--
--	/**
--	 * Helper function for newOrderNotify method
--	 *
--	 * @param $name
--	 * @param $type
--	 * @param $object
--	 * @param $abort
--	 */
--    static function retrieve( $name, $type, $object, $abort = true ) {
--        $value = CRM_Utils_Array::value( $name, $object );
--        if ( $abort && $value === null ) {
--            CRM_Core_Error::debug_log_message( "Could not find an entry for $name" );
--            echo "Failure: Missing Parameter - ".$name."<p>";
--            exit( );
--        }
--
--        if ( $value ) {
--            if ( ! CRM_Utils_Type::validate( $value, $type ) ) {
--                CRM_Core_Error::debug_log_message( "Could not find a valid entry for $name" );
--                echo "Failure: Invalid Parameter<p>";
--                exit( );
--            }
--        }
--
--        return $value;
--    }
--    
--   /**  
--	* This function is not processor specific (taken from PaymentExpressIPN)
--	* The function returns the component(Event/Contribute..)and whether it is Test or not
--	*  
--	* @param array   $privateData    contains the name-value pairs of transaction related data
--	*  
--	* @return array context of this call (test, component, payment processor id)
--	*/
--	static function getContext($privateData)	{
--        require_once 'CRM/Contribute/DAO/Contribution.php';
--
--        $component = null;
--        $isTest = null;
--
--        $contributionID   = $privateData['contributionID'];
--        $contribution     = new CRM_Contribute_DAO_Contribution( );
--        $contribution->id = $contributionID;
--
--        if ( ! $contribution->find( true ) ) {
--            CRM_Core_Error::debug_log_message( "Could not find contribution record!: $contributionID" );
--            echo "Failure: Could not find contribution record for $contributionID<p>";
--            exit( );
--        }
--		
--        if (stristr($contribution->source, 'Online Contribution')) {
--            $component = 'contribute';
--        } elseif (stristr($contribution->source, 'Online Event Registration')) {
--            $component = 'event';
--        }
--        $isTest = $contribution->is_test;
--       
--		$duplicateTransaction = 0;
--        if ($contribution->contribution_status_id == 1) {
--            //contribution already handled. (some processors do two notifications so this could be valid)
--			$duplicateTransaction = 1;
--        }
--
--        if ( $component == 'contribute' ) {
--            if ( ! $contribution->contribution_page_id ) {
--                CRM_Core_Error::debug_log_message( "Could not find contribution page for contribution record: $contributionID" );
--                echo "Failure: Could not find contribution page for contribution record: $contributionID<p>";
--                exit( );
--            }
--
--            // get the payment processor id from contribution page
--            $paymentProcessorID = CRM_Core_DAO::getFieldValue( 'CRM_Contribute_DAO_ContributionPage',
--                                                               $contribution->contribution_page_id,
--                                                               'payment_processor_id' );
--        } else {
--			
--            $eventID = $privateData['eventID'];
--          
--            if ( !$eventID ) {
--                CRM_Core_Error::debug_log_message( "Could not find event ID" );
--                echo "Failure: Could not find eventID<p>";
--                exit( );
--            }
--
--            // we are in event mode
--            // make sure event exists and is valid
--            require_once 'CRM/Event/DAO/Event.php';
--            $event = new CRM_Event_DAO_Event( );
--            $event->id = $eventID;
--            if ( ! $event->find( true ) ) {
--                CRM_Core_Error::debug_log_message( "Could not find event: $eventID" );
--                echo "Failure: Could not find event: $eventID<p>";
--                exit( );
--            }
--            
--            // get the payment processor id from contribution page
--            $paymentProcessorID = $event->payment_processor;  //this variable name changed from 3.4 to 4.2
--        }
--
--        if ( ! $paymentProcessorID ) {
--            CRM_Core_Error::debug_log_message( "Could not find payment processor for contribution record: $contributionID" );
--            echo "Failure: Could not find payment processor for contribution record: $contributionID<p>";
--            exit( );
--        }
--
--        return array( $isTest, $component, $paymentProcessorID, $duplicateTransaction );
--    }
--
--    /**
--     * This is a processor specific implementation of this method
--     * This function handles the notification request coming from the CBM Server
--     * by first checking to see if the transaction is already being processed, then
--     * validating the request for notification and finaly sending a notification
--     * response back to the CBM Server.  
--     * 
--     * @param $sessionAuthTicket
--     * @param $xmlFieldArray
--     * @param $cbm_trxn_auth_url
--     * @param $cbm_trxn_state 
--     *
--     * Note, a couple of these params are not needed anymore, but why mess with something that works?
--     */
--    static function processNotificationResponse($sessionAuthTicket, $xmlFieldArray, $cbm_trxn_auth_url, $cbm_trxn_auth_port, $cbm_trxn_state) {
--    	
--	  	// ensure that the transaction isn't already being processed
--    	if($cbm_trxn_state != 'PYMT_REQUESTED') {
--    		//already been processed, send success message
--    		$reply = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
--	           			. "<credit_card_service_response>"
--	           			. "<CBM_ID>" .$xmlFieldArray['CBM_ID']. "</CBM_ID>"
--	           			. "<MERCHANT_ID>".$xmlFieldArray['MERCHANT_ID']."</MERCHANT_ID>"
--	           			. "<STATUS_CODE>0</STATUS_CODE>"
--	           			. "</credit_card_service_response>";
--	    
--	        header('Content-Type: text/xml');
--	      	print $reply;
--	      	exit;
--	    }
--	    
--  		$newState = "COMPLETE";
--  		$statusCode = "0"; //success
--   		$payment_num = $xmlFieldArray['CBM_ID'];
--
--		//update cbm_trxn row state and notification code
--	    $query = "UPDATE civicrm_cbm_trxn SET state='{$newState}', 
--       				payment_num='{$payment_num}', 
--	    			notification_request_code='{$xmlFieldArray['STATUS_CODE']}' 
--	    			WHERE cbm_unique_id = %1";
--		$params = array(1 => array($xmlFieldArray['MERCHANT_ID'], 'String'));
--	    $daoUpdate = & CRM_Core_DAO::executeQuery($query, $params);
--	  		
--
--		//update the successfull transaction	
--    	//GET CONTEXT - retrieves information to complete transaction
--    	$params = array('cbm_unique_id' => $xmlFieldArray['MERCHANT_ID']);
--        $values = array();
--
--        $Trxn_Obj = CRM_Core_DAO::commonRetrieve('CRM_Core_DAO_CbmTrxn', $params, $values);
--        
--        $privateData = array();
--        $privateData['contactID'] = $Trxn_Obj->contact_id;
--		$privateData['contributionID'] = $Trxn_Obj->contribution_id;
--		$privateData['contributionTypeID'] = $Trxn_Obj->contributionType_id;
--		$privateData['invoiceID'] = $Trxn_Obj->invoice_id;
--
--		$component = $Trxn_Obj->component;
--		if ($component == "event") {
--			$privateData['participantID'] = $Trxn_Obj->participant_id;
--			$privateData['eventID'] = $Trxn_Obj->event_id;
--		} 
--		elseif ($component == "contribute") {
--	        $privateData["membershipID"] = $Trxn_Obj->membership_id;			
--		}
--		
--        list($mode, $component, $paymentProcessorID, $duplicateTransaction) = self::getContext($privateData);
--        $mode = ($mode)? 'test': 'live';
--
--        $paymentProcessor = CRM_Financial_BAO_PaymentProcessor::getPayment($paymentProcessorID, $mode);
--        $ipn=& self::singleton($mode, $component, $paymentProcessor);
--	  		
--		if ($duplicateTransaction == 0) {
--			$ipn->newOrderNotify(1, $privateData, $component, $Trxn_Obj->amount, $values['auth_ticket']);
--		}
--	  		
--	  			  		
--	  	//Return validation response to CBM 
--	    $reply = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
--	         			. "<credit_card_service_response>"
--	          			. "<CBM_ID>" .$xmlFieldArray['CBM_ID']. "</CBM_ID>"
--	          			. "<MERCHANT_ID>". $xmlFieldArray['MERCHANT_ID'] ."</MERCHANT_ID>"
--	          			. "<STATUS_CODE>". $statusCode ."</STATUS_CODE>"
--	           			. "</credit_card_service_response>";
--	    print $reply;
--	    exit;
--	
--    }
--    
--	/**
--	 * Validate the session ticket **** NOT NEEDED ANY MORE ***
--	 * 
--	 * @param $auth_url
--	 * @param $auth_port
--	 * @param $cbmTicket
--	 */
--	static function validateCBMAuthTicket($auth_url, $auth_port, $cbmTicket) {
--		require_once 'CRM/Core/Payment/CBM.php';
--		
--		// Create data string to send to CBM to get a session ticket
--	 	$formdata = array( 	"function" => "verify",
--			    			"authTicket" => "$cbmTicket",
--			    			"service"   => "creditcard"); 
--
--	 	$sessionValidation = CRM_Core_Payment_CBM::hlp_sendPost($auth_url, $auth_port, $formdata);
--	 	$sessionResponseArray = CRM_Core_Payment_CBM::hlp_extract_params_from_XML($sessionValidation, array("response-code"));
--	 	
--		return $sessionResponseArray;	
--	 }
--    	
--    	
--	/**
--	 * Processes the continuation script from the CBM
--	 * and redirect to either the 'Thank you' or the 'cancel' civicrm screen
--	 * 
--	 * This function calls the processor non-specific function getContext()
--	 * 
--	 * @param arary $args
--	 */
--    static function processContinuationResponse($args) {
--    	
--    	//Update civicrm_cbm_trxn record
--    	$merchant_id = $args['MERCHANT_ID'];
--    	$transaction_status = $args['STATUS_CODE'];
--    	
--    	switch($transaction_status) {
--    		case '0': 
--    			$newState = 'COMPLETE';
--				break;    			
--    		case '5':
--				$newState = 'DECLINED';
--				break;    			
--    		case '96':
--				$newState = 'CANCELLED';
--    			break;    			
--    		case '99';	
--    			$newState = 'ERROR';
--    			break;    			
--    	}
--    
--    	
--    	$query = "UPDATE civicrm_cbm_trxn SET state='{$newState}',
--	    			continue_status_code='{$transaction_status}' 
--	    			WHERE cbm_unique_id = %1";
--		$params = array(1 => array($merchant_id, 'String'));
--    	$daoUpdate = & CRM_Core_DAO::executeQuery($query, $params);
--    	
--        //GET CONTEXT - retrieves information to complete transaction
--    	$params = array('cbm_unique_id' => $merchant_id);
--        $values = array();
--        $Trxn_Obj = CRM_Core_DAO::commonRetrieve('CRM_Core_DAO_CbmTrxn', $params, $values);
--        
--		$component = $Trxn_Obj->component;
--
--        //REDIRECT
--        if ($transaction_status == '0') {
--			if ($component == "event") {
--                $finalURL = CRM_Utils_System::url( 'civicrm/event/register',
--                                                   "_qf_ThankYou_display=1&qfKey=".$Trxn_Obj->qfkey, 
--                                                   false, null, false );
--			} 
--			elseif ($component == "contribute") {
--                $finalURL = CRM_Utils_System::url( 'civicrm/contribute/transact',
--                                                   "_qf_ThankYou_display=1&qfKey=".$Trxn_Obj->qfkey,
--                                                   false, null, false );
--			}
--				
--            CRM_Utils_System::redirect($finalURL);	  	
--        }
--    	else {
--		    if ($component == "event") {
--                $finalURL = CRM_Utils_System::url( 'civicrm/event/confirm',
--                                                   "reset=1&cc=fail&participantId=".$Trxn_Obj->participant_id,
--                                                   false, null, false );
--            } 
--            elseif ($component == "contribute") {
--                $finalURL = CRM_Utils_System::url( 'civicrm/contribute/transact',
--                                                   "_qf_Main_display=1&cancel=1&qfKey=".$Trxn_Obj->qfkey,
--                                                   false, null, false );
--            }
--								
--            CRM_Utils_System::redirect($finalURL);			
--        }    	
--    }
--   
--}
+new file mode 100755
+index 0000000..7bebafb
+--- /dev/null
++++ b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php
+@@ -0,0 +1,427 @@
++<?php
++/*
++ * CBM Plugin Package v4 - Oct 10, 2012
++ */
++
++
++require_once 'CRM/Core/Payment/BaseIPN.php';
++
++class CRM_Core_Payment_CBMIPN extends CRM_Core_Payment_BaseIPN {
++
++    /**
++     * We only need one instance of this object. So we use the singleton
++     * pattern and cache the instance in this variable
++     *
++     * @var object
++     */
++    static private $_singleton = null;
++
++    /**
++     * mode of operation: live or test
++     *
++     * @var object
++     */
++    static protected $_mode = null;
++
++
++    /** 
++     * Constructor 
++     * 
++     * @param string $mode the mode of operation: live or test
++     * @return void 
++     */ 
++    function __construct( $mode, &$paymentProcessor ) {
++        parent::__construct( );
++        
++        $this->_mode = $mode;
++        $this->_paymentProcessor = $paymentProcessor;
++    }
++
++    /**  
++     * singleton function used to manage this object  
++     *  
++     * @param string $mode the mode of operation: live or test
++     *  
++     * @return object  
++     */  
++    static function &singleton( $mode, $component, &$paymentProcessor ) {
++        if ( self::$_singleton === null ) {
++            self::$_singleton = new CRM_Core_Payment_CBMIPN( $mode, $paymentProcessor );
++        }
++        return self::$_singleton;
++    }
++
++	/**
++     * This function is not processor specific (taken from PaymentExpressIPN)
++     * The function gets called when a new order takes place.
++	 * 
++	 * @param $success
++	 * @param $privateData
++	 * @param $component
++	 * @param $amount
++	 * @param $transactionReference
++	 */
++    function newOrderNotify( $success, $privateData, $component,$amount,$transactionReference ) {
++        $ids = $input = $params = array( );
++        
++        $input['component'] = strtolower($component);
++
++        $ids['contact']          = self::retrieve( 'contactID'     , 'Integer', $privateData, true );
++        $ids['contribution']     = self::retrieve( 'contributionID', 'Integer', $privateData, true );
++
++        if ( $input['component'] == "event" ) {
++            $ids['event']       = self::retrieve( 'eventID'      , 'Integer', $privateData, true );
++            $ids['participant'] = self::retrieve( 'participantID', 'Integer', $privateData, true );
++            $ids['membership']  = null;
++        } else {
++            $ids['membership'] = self::retrieve( 'membershipID'  , 'Integer', $privateData, false );
++        }
++        $ids['contributionRecur'] = $ids['contributionPage'] = null;
++
++        if ( ! $this->validateData( $input, $ids, $objects ) ) {
++            return false;
++        }
++
++        // make sure the invoice is valid and matches what we have in the contribution record
++        $input['invoice']    =  $privateData['invoiceID'];
++        $input['newInvoice'] =  $transactionReference;
++        $contribution        =& $objects['contribution'];
++		$input['trxn_id']  =	$transactionReference;
++		
++        if ( $contribution->invoice_id != $input['invoice'] ) {
++            CRM_Core_Error::debug_log_message( "Invoice values dont match between database and IPN request" );
++            echo "Failure: Invoice values dont match between database and IPN request<p>";
++            return;
++        }
++
++        // lets replace invoice-id with Payment Processor -number because thats what is common and unique 
++        // in subsequent calls or notifications sent by google.
++        $contribution->invoice_id = $input['newInvoice'];
++
++        $input['amount'] = $amount;
++        
++        if ( $contribution->total_amount != $input['amount'] ) {
++            CRM_Core_Error::debug_log_message( "Amount values dont match between database and IPN request" );
++            echo "Failure: Amount values dont match between database and IPN request. ".$contribution->total_amount."/".$input['amount']."<p>";
++            return;
++        }
++
++        require_once 'CRM/Core/Transaction.php';
++        $transaction = new CRM_Core_Transaction( );
++
++        // check if contribution is already completed, if so we ignore this ipn
++        if ( $contribution->contribution_status_id == 1 ) {
++            CRM_Core_Error::debug_log_message( "returning since contribution has already been handled" );
++            echo "Success: Contribution has already been handled<p>";
++            return true;
++        } else {
++            /* Since trxn_id hasn't got any use here, 
++             * lets make use of it by passing the eventID/membershipTypeID to next level.
++             * And change trxn_id to the payment processor reference before finishing db update */
++            if ( $ids['event'] ) {
++                $contribution->trxn_id =
++                    $ids['event']       . CRM_Core_DAO::VALUE_SEPARATOR .
++                    $ids['participant'] ;
++            } else {
++                $contribution->trxn_id = $ids['membership'];
++            }
++        }
++        $this->completeTransaction ( $input, $ids, $objects, $transaction);
++        return true;
++    }
++
++	/**
++	 * Helper function for newOrderNotify method
++	 *
++	 * @param $name
++	 * @param $type
++	 * @param $object
++	 * @param $abort
++	 */
++    static function retrieve( $name, $type, $object, $abort = true ) {
++        $value = CRM_Utils_Array::value( $name, $object );
++        if ( $abort && $value === null ) {
++            CRM_Core_Error::debug_log_message( "Could not find an entry for $name" );
++            echo "Failure: Missing Parameter - ".$name."<p>";
++            exit( );
++        }
++
++        if ( $value ) {
++            if ( ! CRM_Utils_Type::validate( $value, $type ) ) {
++                CRM_Core_Error::debug_log_message( "Could not find a valid entry for $name" );
++                echo "Failure: Invalid Parameter<p>";
++                exit( );
++            }
++        }
++
++        return $value;
++    }
++    
++   /**  
++	* This function is not processor specific (taken from PaymentExpressIPN)
++	* The function returns the component(Event/Contribute..)and whether it is Test or not
++	*  
++	* @param array   $privateData    contains the name-value pairs of transaction related data
++	*  
++	* @return array context of this call (test, component, payment processor id)
++	*/
++	static function getContext($privateData)	{
++        require_once 'CRM/Contribute/DAO/Contribution.php';
++
++        $component = null;
++        $isTest = null;
++
++        $contributionID   = $privateData['contributionID'];
++        $contribution     = new CRM_Contribute_DAO_Contribution( );
++        $contribution->id = $contributionID;
++
++        if ( ! $contribution->find( true ) ) {
++            CRM_Core_Error::debug_log_message( "Could not find contribution record!: $contributionID" );
++            echo "Failure: Could not find contribution record for $contributionID<p>";
++            exit( );
++        }
++		
++        if (stristr($contribution->source, 'Online Contribution')) {
++            $component = 'contribute';
++        } elseif (stristr($contribution->source, 'Online Event Registration')) {
++            $component = 'event';
++        }
++        $isTest = $contribution->is_test;
++       
++		$duplicateTransaction = 0;
++        if ($contribution->contribution_status_id == 1) {
++            //contribution already handled. (some processors do two notifications so this could be valid)
++			$duplicateTransaction = 1;
++        }
++
++        if ( $component == 'contribute' ) {
++            if ( ! $contribution->contribution_page_id ) {
++                CRM_Core_Error::debug_log_message( "Could not find contribution page for contribution record: $contributionID" );
++                echo "Failure: Could not find contribution page for contribution record: $contributionID<p>";
++                exit( );
++            }
++
++            // get the payment processor id from contribution page
++            $paymentProcessorID = CRM_Core_DAO::getFieldValue( 'CRM_Contribute_DAO_ContributionPage',
++                                                               $contribution->contribution_page_id,
++                                                               'payment_processor_id' );
++        } else {
++			
++            $eventID = $privateData['eventID'];
++          
++            if ( !$eventID ) {
++                CRM_Core_Error::debug_log_message( "Could not find event ID" );
++                echo "Failure: Could not find eventID<p>";
++                exit( );
++            }
++
++            // we are in event mode
++            // make sure event exists and is valid
++            require_once 'CRM/Event/DAO/Event.php';
++            $event = new CRM_Event_DAO_Event( );
++            $event->id = $eventID;
++            if ( ! $event->find( true ) ) {
++                CRM_Core_Error::debug_log_message( "Could not find event: $eventID" );
++                echo "Failure: Could not find event: $eventID<p>";
++                exit( );
++            }
++            
++            // get the payment processor id from contribution page
++            $paymentProcessorID = $event->payment_processor;  //this variable name changed from 3.4 to 4.2
++        }
++
++        if ( ! $paymentProcessorID ) {
++            CRM_Core_Error::debug_log_message( "Could not find payment processor for contribution record: $contributionID" );
++            echo "Failure: Could not find payment processor for contribution record: $contributionID<p>";
++            exit( );
++        }
++
++        return array( $isTest, $component, $paymentProcessorID, $duplicateTransaction );
++    }
++
++    /**
++     * This is a processor specific implementation of this method
++     * This function handles the notification request coming from the CBM Server
++     * by first checking to see if the transaction is already being processed, then
++     * validating the request for notification and finaly sending a notification
++     * response back to the CBM Server.  
++     * 
++     * @param $sessionAuthTicket
++     * @param $xmlFieldArray
++     * @param $cbm_trxn_auth_url
++     * @param $cbm_trxn_state 
++     *
++     * Note, a couple of these params are not needed anymore, but why mess with something that works?
++     */
++    static function processNotificationResponse($sessionAuthTicket, $xmlFieldArray, $cbm_trxn_auth_url, $cbm_trxn_auth_port, $cbm_trxn_state) {
++    	
++	  	// ensure that the transaction isn't already being processed
++    	if($cbm_trxn_state != 'PYMT_REQUESTED') {
++    		//already been processed, send success message
++    		$reply = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
++	           			. "<credit_card_service_response>"
++	           			. "<CBM_ID>" .$xmlFieldArray['CBM_ID']. "</CBM_ID>"
++	           			. "<MERCHANT_ID>".$xmlFieldArray['MERCHANT_ID']."</MERCHANT_ID>"
++	           			. "<STATUS_CODE>0</STATUS_CODE>"
++	           			. "</credit_card_service_response>";
++	    
++	        header('Content-Type: text/xml');
++	      	print $reply;
++	      	exit;
++	    }
++	    
++  		$newState = "COMPLETE";
++  		$statusCode = "0"; //success
++   		$payment_num = $xmlFieldArray['CBM_ID'];
++
++		//update cbm_trxn row state and notification code
++	    $query = "UPDATE civicrm_cbm_trxn SET state='{$newState}', 
++       				payment_num='{$payment_num}', 
++	    			notification_request_code='{$xmlFieldArray['STATUS_CODE']}' 
++	    			WHERE cbm_unique_id = %1";
++		$params = array(1 => array($xmlFieldArray['MERCHANT_ID'], 'String'));
++	    $daoUpdate = & CRM_Core_DAO::executeQuery($query, $params);
++	  		
++
++		//update the successfull transaction	
++    	//GET CONTEXT - retrieves information to complete transaction
++    	$params = array('cbm_unique_id' => $xmlFieldArray['MERCHANT_ID']);
++        $values = array();
++
++        $Trxn_Obj = CRM_Core_DAO::commonRetrieve('CRM_Core_DAO_CbmTrxn', $params, $values);
++        
++        $privateData = array();
++        $privateData['contactID'] = $Trxn_Obj->contact_id;
++		$privateData['contributionID'] = $Trxn_Obj->contribution_id;
++		$privateData['contributionTypeID'] = $Trxn_Obj->contributionType_id;
++		$privateData['invoiceID'] = $Trxn_Obj->invoice_id;
++
++		$component = $Trxn_Obj->component;
++		if ($component == "event") {
++			$privateData['participantID'] = $Trxn_Obj->participant_id;
++			$privateData['eventID'] = $Trxn_Obj->event_id;
++		} 
++		elseif ($component == "contribute") {
++	        $privateData["membershipID"] = $Trxn_Obj->membership_id;			
++		}
++		
++        list($mode, $component, $paymentProcessorID, $duplicateTransaction) = self::getContext($privateData);
++        $mode = ($mode)? 'test': 'live';
++
++        $paymentProcessor = CRM_Financial_BAO_PaymentProcessor::getPayment($paymentProcessorID, $mode);
++        $ipn=& self::singleton($mode, $component, $paymentProcessor);
++	  		
++		if ($duplicateTransaction == 0) {
++			$ipn->newOrderNotify(1, $privateData, $component, $Trxn_Obj->amount, $values['auth_ticket']);
++		}
++	  		
++	  			  		
++	  	//Return validation response to CBM 
++	    $reply = "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>"
++	         			. "<credit_card_service_response>"
++	          			. "<CBM_ID>" .$xmlFieldArray['CBM_ID']. "</CBM_ID>"
++	          			. "<MERCHANT_ID>". $xmlFieldArray['MERCHANT_ID'] ."</MERCHANT_ID>"
++	          			. "<STATUS_CODE>". $statusCode ."</STATUS_CODE>"
++	           			. "</credit_card_service_response>";
++	    print $reply;
++	    exit;
++	
++    }
++    
++	/**
++	 * Validate the session ticket **** NOT NEEDED ANY MORE ***
++	 * 
++	 * @param $auth_url
++	 * @param $auth_port
++	 * @param $cbmTicket
++	 */
++	static function validateCBMAuthTicket($auth_url, $auth_port, $cbmTicket) {
++		require_once 'CRM/Core/Payment/CBM.php';
++		
++		// Create data string to send to CBM to get a session ticket
++	 	$formdata = array( 	"function" => "verify",
++			    			"authTicket" => "$cbmTicket",
++			    			"service"   => "creditcard"); 
++
++	 	$sessionValidation = CRM_Core_Payment_CBM::hlp_sendPost($auth_url, $auth_port, $formdata);
++	 	$sessionResponseArray = CRM_Core_Payment_CBM::hlp_extract_params_from_XML($sessionValidation, array("response-code"));
++	 	
++		return $sessionResponseArray;	
++	 }
++    	
++    	
++	/**
++	 * Processes the continuation script from the CBM
++	 * and redirect to either the 'Thank you' or the 'cancel' civicrm screen
++	 * 
++	 * This function calls the processor non-specific function getContext()
++	 * 
++	 * @param arary $args
++	 */
++    static function processContinuationResponse($args) {
++    	
++    	//Update civicrm_cbm_trxn record
++    	$merchant_id = $args['MERCHANT_ID'];
++    	$transaction_status = $args['STATUS_CODE'];
++    	
++    	switch($transaction_status) {
++    		case '0': 
++    			$newState = 'COMPLETE';
++				break;    			
++    		case '5':
++				$newState = 'DECLINED';
++				break;    			
++    		case '96':
++				$newState = 'CANCELLED';
++    			break;    			
++    		case '99';	
++    			$newState = 'ERROR';
++    			break;    			
++    	}
++    
++    	
++    	$query = "UPDATE civicrm_cbm_trxn SET state='{$newState}',
++	    			continue_status_code='{$transaction_status}' 
++	    			WHERE cbm_unique_id = %1";
++		$params = array(1 => array($merchant_id, 'String'));
++    	$daoUpdate = & CRM_Core_DAO::executeQuery($query, $params);
++    	
++        //GET CONTEXT - retrieves information to complete transaction
++    	$params = array('cbm_unique_id' => $merchant_id);
++        $values = array();
++        $Trxn_Obj = CRM_Core_DAO::commonRetrieve('CRM_Core_DAO_CbmTrxn', $params, $values);
++        
++		$component = $Trxn_Obj->component;
++
++        //REDIRECT
++        if ($transaction_status == '0') {
++			if ($component == "event") {
++                $finalURL = CRM_Utils_System::url( 'civicrm/event/register',
++                                                   "_qf_ThankYou_display=1&qfKey=".$Trxn_Obj->qfkey, 
++                                                   false, null, false );
++			} 
++			elseif ($component == "contribute") {
++                $finalURL = CRM_Utils_System::url( 'civicrm/contribute/transact',
++                                                   "_qf_ThankYou_display=1&qfKey=".$Trxn_Obj->qfkey,
++                                                   false, null, false );
++			}
++				
++            CRM_Utils_System::redirect($finalURL);	  	
++        }
++    	else {
++		    if ($component == "event") {
++                $finalURL = CRM_Utils_System::url( 'civicrm/event/confirm',
++                                                   "reset=1&cc=fail&participantId=".$Trxn_Obj->participant_id,
++                                                   false, null, false );
++            } 
++            elseif ($component == "contribute") {
++                $finalURL = CRM_Utils_System::url( 'civicrm/contribute/transact',
++                                                   "_qf_Main_display=1&cancel=1&qfKey=".$Trxn_Obj->qfkey,
++                                                   false, null, false );
++            }
++								
++            CRM_Utils_System::redirect($finalURL);			
++        }    	
++    }
++   
++}
 diff --git a/sites/all/modules/custom/civicrm/extern/cbmContinue.php b/sites/all/modules/custom/civicrm/extern/cbmContinue.php
-deleted file mode 100755
-index 9300a9b..0000000
---- a/sites/all/modules/custom/civicrm/extern/cbmContinue.php
-+++ /dev/null
-@@ -1,44 +0,0 @@
--<?php
--/*
-- * CBM Plugin Package v4 - Oct 10, 2012
-- */
--
--/**
-- * Continuation Script
-- * 
-- * This script receives the continuation message and calls the 
-- * processContinuationResponse function which handles the request
-- * 
-- * Example continuation message:
-- * 
-- * http://www.transcripts.com/continuerequest?CBM_ID=1503958&STATUS_CODE=0&
-- * MERCHANT_ID=123456&MESSAGE=approved&AMOUNT=25.30
-- */
--
--error_reporting(E_ALL);
--ini_set('display_errors', TRUE);
--ini_set('display_startup_errors', TRUE);
--
--if ($_GET) {
--	$args = $_GET;
--}
--elseif ($_POST) {
--	$args = $_POST;
--}
--
--session_start();
--	
--require_once '../civicrm.config.php';
--require_once '../CRM/Core/Config.php';
--require_once '../CRM/Core/Payment/CBMIPN.php';
--	
--$config = CRM_Core_Config::singleton();
--
--if (!($args)) {
--	//Die if user navigated here somehow
--  	CRM_Core_Error::fatal(ts('Unauthorized page access'));
--}
--else {
--	CRM_Core_Payment_CBMIPN::processContinuationResponse($args);
--}
--
+new file mode 100755
+index 0000000..9300a9b
+--- /dev/null
++++ b/sites/all/modules/custom/civicrm/extern/cbmContinue.php
+@@ -0,0 +1,44 @@
++<?php
++/*
++ * CBM Plugin Package v4 - Oct 10, 2012
++ */
++
++/**
++ * Continuation Script
++ * 
++ * This script receives the continuation message and calls the 
++ * processContinuationResponse function which handles the request
++ * 
++ * Example continuation message:
++ * 
++ * http://www.transcripts.com/continuerequest?CBM_ID=1503958&STATUS_CODE=0&
++ * MERCHANT_ID=123456&MESSAGE=approved&AMOUNT=25.30
++ */
++
++error_reporting(E_ALL);
++ini_set('display_errors', TRUE);
++ini_set('display_startup_errors', TRUE);
++
++if ($_GET) {
++	$args = $_GET;
++}
++elseif ($_POST) {
++	$args = $_POST;
++}
++
++session_start();
++	
++require_once '../civicrm.config.php';
++require_once '../CRM/Core/Config.php';
++require_once '../CRM/Core/Payment/CBMIPN.php';
++	
++$config = CRM_Core_Config::singleton();
++
++if (!($args)) {
++	//Die if user navigated here somehow
++  	CRM_Core_Error::fatal(ts('Unauthorized page access'));
++}
++else {
++	CRM_Core_Payment_CBMIPN::processContinuationResponse($args);
++}
++
 diff --git a/sites/all/modules/custom/civicrm/extern/cbmNotify.php b/sites/all/modules/custom/civicrm/extern/cbmNotify.php
-deleted file mode 100755
-index f80a0c7..0000000
---- a/sites/all/modules/custom/civicrm/extern/cbmNotify.php
-+++ /dev/null
-@@ -1,64 +0,0 @@
--<?php
--/*
-- * CBM Plugin Package v4 - Oct 10, 2012
-- */
--
--
--/**
-- * Notification Request Script
-- * 
-- * CBM WS sends Notification Request message to Merchant WS with the Transaction ID
-- * Parse and validate this request and send Notification Response for the
-- * payment transaction to be finalized.
-- *  
-- * Example Request Message:
-- * 
-- * http://www.transcripts.com/notifyrequest?TICKET=Õsf474e0d21314145862Õ
-- * xml_details=<?xml version=Õ1.0Õ encoding=ÕUTF-8Õ standalone=ÕyesÕ?>
-- * <creditcard_service_result><CBM_ID>1234</CBM_ID>
-- * <MERCHANT_ID>5678</MERCHANT_ID>
-- * <STATUS_CODE>0</STATUS_CODE>
-- * <MESSAGE>approved</MESSAGE>
-- * <AMOUNT>24.30</AMOUNT> 
-- * </creditcard_service_result>
-- *  
-- */
--session_start();
--	
--require_once '../civicrm.config.php';
--require_once '../CRM/Core/Config.php';	
--$config = CRM_Core_Config::singleton();
--
--if (!isset($_POST)) {
--	//Die if user navigated here somehow
--  	CRM_Core_Error::fatal(ts('Unauthorized page access'));
--	
--}else {
-- 	require_once '../CRM/Core/Payment/CBM.php';
--	require_once '../CRM/Core/Payment/CBMIPN.php';
--	
--	$sessionAuthTicket = $_POST["TICKET"];
--  	$cbmXml = $_POST["xml_details"];
--  	//parse xml portion
--  	$xmlFieldNames = array("CBM_ID", "MERCHANT_ID", "STATUS_CODE", "MESSAGE", "AMOUNT");
--  	$xmlFieldArray = CRM_Core_Payment_CBM::hlp_extract_params_from_XML($cbmXml, $xmlFieldNames);
--
--
--    //Get the cbm trxn row
--	$query = "SELECT state FROM civicrm_cbm_trxn WHERE cbm_unique_id = %1";
--	$params = array(1 => array($xmlFieldArray['MERCHANT_ID'], 'String'));
--	
--	$cbm_trxn_row = CRM_Core_DAO::executeQuery($query, $params);
--	while ($cbm_trxn_row->fetch()) {
--		$cbm_trxn_auth_url = $cbm_trxn_row->auth_url;
--		$cbm_trxn_auth_port = $cbm_trxn_row->auth_port;
--		$cbm_trxn_state = $cbm_trxn_row->state;
--	}
--	
--	CRM_Core_Payment_CBMIPN::processNotificationResponse($sessionAuthTicket, $xmlFieldArray, 
--												$cbm_trxn_auth_url, $cbm_trxn_auth_port, $cbm_trxn_state);
--
--}	
--	
--	
--	
+new file mode 100755
+index 0000000..f80a0c7
+--- /dev/null
++++ b/sites/all/modules/custom/civicrm/extern/cbmNotify.php
+@@ -0,0 +1,64 @@
++<?php
++/*
++ * CBM Plugin Package v4 - Oct 10, 2012
++ */
++
++
++/**
++ * Notification Request Script
++ * 
++ * CBM WS sends Notification Request message to Merchant WS with the Transaction ID
++ * Parse and validate this request and send Notification Response for the
++ * payment transaction to be finalized.
++ *  
++ * Example Request Message:
++ * 
++ * http://www.transcripts.com/notifyrequest?TICKET=Õsf474e0d21314145862Õ
++ * xml_details=<?xml version=Õ1.0Õ encoding=ÕUTF-8Õ standalone=ÕyesÕ?>
++ * <creditcard_service_result><CBM_ID>1234</CBM_ID>
++ * <MERCHANT_ID>5678</MERCHANT_ID>
++ * <STATUS_CODE>0</STATUS_CODE>
++ * <MESSAGE>approved</MESSAGE>
++ * <AMOUNT>24.30</AMOUNT> 
++ * </creditcard_service_result>
++ *  
++ */
++session_start();
++	
++require_once '../civicrm.config.php';
++require_once '../CRM/Core/Config.php';	
++$config = CRM_Core_Config::singleton();
++
++if (!isset($_POST)) {
++	//Die if user navigated here somehow
++  	CRM_Core_Error::fatal(ts('Unauthorized page access'));
++	
++}else {
++ 	require_once '../CRM/Core/Payment/CBM.php';
++	require_once '../CRM/Core/Payment/CBMIPN.php';
++	
++	$sessionAuthTicket = $_POST["TICKET"];
++  	$cbmXml = $_POST["xml_details"];
++  	//parse xml portion
++  	$xmlFieldNames = array("CBM_ID", "MERCHANT_ID", "STATUS_CODE", "MESSAGE", "AMOUNT");
++  	$xmlFieldArray = CRM_Core_Payment_CBM::hlp_extract_params_from_XML($cbmXml, $xmlFieldNames);
++
++
++    //Get the cbm trxn row
++	$query = "SELECT state FROM civicrm_cbm_trxn WHERE cbm_unique_id = %1";
++	$params = array(1 => array($xmlFieldArray['MERCHANT_ID'], 'String'));
++	
++	$cbm_trxn_row = CRM_Core_DAO::executeQuery($query, $params);
++	while ($cbm_trxn_row->fetch()) {
++		$cbm_trxn_auth_url = $cbm_trxn_row->auth_url;
++		$cbm_trxn_auth_port = $cbm_trxn_row->auth_port;
++		$cbm_trxn_state = $cbm_trxn_row->state;
++	}
++	
++	CRM_Core_Payment_CBMIPN::processNotificationResponse($sessionAuthTicket, $xmlFieldArray, 
++												$cbm_trxn_auth_url, $cbm_trxn_auth_port, $cbm_trxn_state);
++
++}	
++	
++	
++	
