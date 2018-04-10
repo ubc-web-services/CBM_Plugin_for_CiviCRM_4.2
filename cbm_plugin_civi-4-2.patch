@@ -1,8 +1,8 @@
-diff --git a/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php b/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php
+diff --git a/CRM/Core/DAO/CbmTrxn.php b/CRM/Core/DAO/CbmTrxn.php
 new file mode 100755
 index 0000000..d7e3390
 --- /dev/null
-+++ b/sites/all/modules/custom/civicrm/CRM/Core/DAO/CbmTrxn.php
++++ b/CRM/Core/DAO/CbmTrxn.php
 @@ -0,0 +1,216 @@
 +<?php
 +/*
@@ -220,11 +220,11 @@ index 0000000..d7e3390
 +
 +
 +
-diff --git a/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php
+diff --git a/CRM/Core/Payment/CBM.php b/CRM/Core/Payment/CBM.php
 new file mode 100755
 index 0000000..b9a8b28
 --- /dev/null
-+++ b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBM.php
++++ b/CRM/Core/Payment/CBM.php
 @@ -0,0 +1,367 @@
 +<?php
 +/*
@@ -593,11 +593,11 @@ index 0000000..b9a8b28
 +	
 +
 +}
-diff --git a/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php
+diff --git a/CRM/Core/Payment/CBMIPN.php b/CRM/Core/Payment/CBMIPN.php
 new file mode 100755
 index 0000000..7bebafb
 --- /dev/null
-+++ b/sites/all/modules/custom/civicrm/CRM/Core/Payment/CBMIPN.php
++++ b/CRM/Core/Payment/CBMIPN.php
 @@ -0,0 +1,427 @@
 +<?php
 +/*
@@ -1026,11 +1026,11 @@ index 0000000..7bebafb
 +    }
 +   
 +}
-diff --git a/sites/all/modules/custom/civicrm/extern/cbmContinue.php b/sites/all/modules/custom/civicrm/extern/cbmContinue.php
+diff --git a/extern/cbmContinue.php b/extern/cbmContinue.php
 new file mode 100755
 index 0000000..9300a9b
 --- /dev/null
-+++ b/sites/all/modules/custom/civicrm/extern/cbmContinue.php
++++ b/extern/cbmContinue.php
 @@ -0,0 +1,44 @@
 +<?php
 +/*
@@ -1076,11 +1076,11 @@ index 0000000..9300a9b
 +	CRM_Core_Payment_CBMIPN::processContinuationResponse($args);
 +}
 +
-diff --git a/sites/all/modules/custom/civicrm/extern/cbmNotify.php b/sites/all/modules/custom/civicrm/extern/cbmNotify.php
+diff --git a/extern/cbmNotify.php b/extern/cbmNotify.php
 new file mode 100755
 index 0000000..f80a0c7
 --- /dev/null
-+++ b/sites/all/modules/custom/civicrm/extern/cbmNotify.php
++++ b/extern/cbmNotify.php
 @@ -0,0 +1,64 @@
 +<?php
 +/*
