@@ -16,6 +16,7 @@ class CRM_Core_DAO_CbmTrxn extends CRM_Core_DAO {
     
     public $id;
     public $cbm_unique_id;
+    public $payment_num;
     public $auth_url;
     public $auth_port;
     public $state;
