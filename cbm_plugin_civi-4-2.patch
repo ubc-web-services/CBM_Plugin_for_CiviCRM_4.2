@@ -248,7 +248,7 @@ index 0000000..b9a8b28
 +		CHARSET  = 'iso-8859-1';
 +	
 +	const	
-+		TEST_AUTH_PORT = "8301",
++		TEST_AUTH_PORT = "",
 +		TEST_PAYM_PORT = "",
 +		LIVE_AUTH_PORT = "",
 +		LIVE_PAYM_PORT = "";

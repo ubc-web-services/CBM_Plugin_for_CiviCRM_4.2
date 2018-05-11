@@ -19,7 +19,7 @@ class CRM_Core_Payment_CBM extends CRM_Core_Payment {
 		CHARSET  = 'iso-8859-1';
 	
 	const	
-		TEST_AUTH_PORT = "8301",
+		TEST_AUTH_PORT = "",
 		TEST_PAYM_PORT = "",
 		LIVE_AUTH_PORT = "",
 		LIVE_PAYM_PORT = "";
