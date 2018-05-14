@@ -599,7 +599,7 @@ new file mode 100644
 index 0000000..7bebafb
 --- /dev/null
 +++ b/CRM/Core/Payment/CBMIPN.php
-@@ -0,0 +1,427 @@
+@@ -0,0 +1,429 @@
 +<?php
 +/*
 + * CBM Plugin Package v4 - Oct 10, 2012
@@ -925,6 +925,8 @@ index 0000000..7bebafb
 +	          			. "<MERCHANT_ID>". $xmlFieldArray['MERCHANT_ID'] ."</MERCHANT_ID>"
 +	          			. "<STATUS_CODE>". $statusCode ."</STATUS_CODE>"
 +	           			. "</credit_card_service_response>";
++        CRM_Core_Error::debug_log_message('here');
++        CRM_Core_Error::debug_log_message('REPLY: '.$reply);
 +	    print $reply;
 +	    exit;
 +	

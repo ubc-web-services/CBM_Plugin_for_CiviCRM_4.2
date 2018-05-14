@@ -323,6 +323,8 @@ class CRM_Core_Payment_CBMIPN extends CRM_Core_Payment_BaseIPN {
 	          			. "<MERCHANT_ID>". $xmlFieldArray['MERCHANT_ID'] ."</MERCHANT_ID>"
 	          			. "<STATUS_CODE>". $statusCode ."</STATUS_CODE>"
 	           			. "</credit_card_service_response>";
+        CRM_Core_Error::debug_log_message('here');
+        CRM_Core_Error::debug_log_message('REPLY: '.$reply);
 	    print $reply;
 	    exit;
 	
