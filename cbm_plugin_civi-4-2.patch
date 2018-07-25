@@ -535,13 +535,12 @@ index 0000000..b9a8b28
 +        }		
 +
 +        //Insert row for this transaction
-+        $db_auth_port = ($this->_authport == '')? 0:$this->_authport;
-+        $db_membership_id = ($membershipID == '')? 0:$membershipID;
-+        $db_payment_num = 0;
-+        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, payment_num, auth_url, auth_port, state, amount, contact_id, 
++		 $db_auth_port = ($this->_authport == '')? 0:$this->_authport;
++		 $db_membership_id = ($membershipID == '')? 0:$membershipID;
++        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, auth_url, auth_port, state, amount, contact_id, 
 +        										contribution_id, contributionType_id, invoice_id, component, 
 +        										qfkey, participant_id, event_id, membership_id) 
-+        			VALUES ('{$txn_id}', '{$db_payment_num}', '{$this->_paymentProcessor['url_site']}', 
++        			VALUES ('{$txn_id}', '{$this->_paymentProcessor['url_site']}', 
 +        					'{$db_auth_port}', 'PYMT_REQUESTED', '{$amount}', '{$params['contactID']}', 
 +        					'{$params['contributionID']}', '{$params['contributionTypeID']}', '{$params['invoiceID']}', '{$component}', 
 +        					'{$params['qfKey']}', '{$params['participantID']}', '{$params['eventID']}', '{$db_membership_id}')";
@@ -587,7 +586,16 @@ index 0000000..b9a8b28
 +    function doDirectPayment( &$params ) {
 +        CRM_Core_Error::fatal( ts( 'This function is not implemented' ) );
 +    }
-+ }
++	
++	
++	
++	
++	
++	
++	
++	
++
++}
 diff --git a/CRM/Core/Payment/CBMIPN.php b/CRM/Core/Payment/CBMIPN.php
 new file mode 100644
 index 0000000..7bebafb
@@ -1092,8 +1100,8 @@ index 0000000..f80a0c7
 + *  
 + * Example Request Message:
 + * 
-+ * http://www.transcripts.com/notifyrequest?TICKET=Õsf474e0d21314145862Õ
-+ * xml_details=<?xml version=Õ1.0Õ encoding=ÕUTF-8Õ standalone=ÕyesÕ?>
++ * http://www.transcripts.com/notifyrequest?TICKET=sf474e0d21314145862
++ * xml_details=<?xml version=1.0 encoding=UTF-8 standalone=yes?>
 + * <creditcard_service_result><CBM_ID>1234</CBM_ID>
 + * <MERCHANT_ID>5678</MERCHANT_ID>
 + * <STATUS_CODE>0</STATUS_CODE>
@@ -1137,4 +1145,7 @@ index 0000000..f80a0c7
 +	CRM_Core_Payment_CBMIPN::processNotificationResponse($sessionAuthTicket, $xmlFieldArray, 
 +												$cbm_trxn_auth_url, $cbm_trxn_auth_port, $cbm_trxn_state);
 +
-+}
++}	
++	
++	
++	
