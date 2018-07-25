@@ -537,10 +537,11 @@ index 0000000..b9a8b28
 +        //Insert row for this transaction
 +		 $db_auth_port = ($this->_authport == '')? 0:$this->_authport;
 +		 $db_membership_id = ($membershipID == '')? 0:$membershipID;
-+        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, auth_url, auth_port, state, amount, contact_id, 
++    $db_payment_num = 0;
++        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, payment_num, auth_url, auth_port, state, amount, contact_id, 
 +        										contribution_id, contributionType_id, invoice_id, component, 
 +        										qfkey, participant_id, event_id, membership_id) 
-+        			VALUES ('{$txn_id}', '{$this->_paymentProcessor['url_site']}', 
++        			VALUES ('{$txn_id}', '{$db_payment_num}', '{$this->_paymentProcessor['url_site']}', 
 +        					'{$db_auth_port}', 'PYMT_REQUESTED', '{$amount}', '{$params['contactID']}', 
 +        					'{$params['contributionID']}', '{$params['contributionTypeID']}', '{$params['invoiceID']}', '{$component}', 
 +        					'{$params['qfKey']}', '{$params['participantID']}', '{$params['eventID']}', '{$db_membership_id}')";
