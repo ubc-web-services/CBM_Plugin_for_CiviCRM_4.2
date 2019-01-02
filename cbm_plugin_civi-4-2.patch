@@ -353,8 +353,8 @@ index 0000000..b9a8b28
 +        }		
 +
 +       	
-+        $notifyURL = "https://cpd.pharmacy.ubc.ca/extern/cbmNotify.php";
-+        $continueURL = "https://cpd.pharmacy.ubc.ca/extern/cbmContinue.php";
++        $notifyURL = $config->userFrameworkResourceURL."extern/cbmNotify.php";
++        $continueURL = $config->userFrameworkResourceURL."extern/cbmContinue.php";
 +        $urls = array('cancel' => $cancelURL, 'notify' => $notifyURL, 'continue' => $continueURL);
 +
 +        
@@ -868,7 +868,7 @@ index 0000000..7bebafb
 +	           			. "<MERCHANT_ID>".$xmlFieldArray['MERCHANT_ID']."</MERCHANT_ID>"
 +	           			. "<STATUS_CODE>0</STATUS_CODE>"
 +	           			. "</credit_card_service_response>";
-+	    
++	        CRM_Core_Error::debug_log_message("Reply: $reply");
 +	        header('Content-Type: text/xml');
 +	      	print $reply;
 +	      	exit;
