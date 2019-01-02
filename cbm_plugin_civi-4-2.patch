@@ -353,8 +353,8 @@ index 0000000..b9a8b28
 +        }		
 +
 +       	
-+        $notifyURL = $config->userFrameworkResourceURL."extern/cbmNotify.php";
-+        $continueURL = $config->userFrameworkResourceURL."extern/cbmContinue.php";
++        $notifyURL = "https://cpd.pharmacy.ubc.ca/extern/cbmNotify.php";
++        $continueURL = "https://cpd.pharmacy.ubc.ca/extern/cbmContinue.php";
 +        $urls = array('cancel' => $cancelURL, 'notify' => $notifyURL, 'continue' => $continueURL);
 +
 +        
