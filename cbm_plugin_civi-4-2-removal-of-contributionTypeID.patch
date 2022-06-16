@@ -536,7 +536,7 @@ index 0000000..b9a8b28
 +
 +        //Insert row for this transaction
 +		 $db_auth_port = ($this->_authport == '')? 0:$this->_authport;
-+		 $db_membership_id = ($membershipID == '')? 0:$membershipID;
++		 $db_membership_id = ($membershipID == '')? 0:$membershipID; CRM_Core_Error::debug_log_message('params' . print_r($params, true));
 +        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, auth_url, auth_port, state, amount, contact_id, 
 +        										contribution_id, contributionType_id, invoice_id, component, 
 +        										qfkey, participant_id, event_id, membership_id) 
