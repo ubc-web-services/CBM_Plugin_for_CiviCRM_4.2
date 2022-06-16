@@ -897,7 +897,7 @@ index 0000000..7bebafb
 +        $privateData = array();
 +        $privateData['contactID'] = $Trxn_Obj->contact_id;
 +		$privateData['contributionID'] = $Trxn_Obj->contribution_id;
-+		$privateData['contributionTypeID'] = $Trxn_Obj->contributionType_id;
++		$privateData['contributionTypeID'] = $Trxn_Obj->financialType_id;
 +		$privateData['invoiceID'] = $Trxn_Obj->invoice_id;
 +
 +		$component = $Trxn_Obj->component;
