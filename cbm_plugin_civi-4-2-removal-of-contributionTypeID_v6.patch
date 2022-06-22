@@ -541,7 +541,7 @@ index 0000000..b9a8b28
 +    $serializedParams = serialize($params);
 +    CRM_Core_Error::debug_log_message('postPaymentReq() serialized params: ' . print_r($serializedParams, true), true);
 +    $financialTypeID = null;
-+    array_walk_recursive($params, function ($item, $key) {
++    array_walk_recursive($params, function ($item, $key) use(& $financialTypeID) {
 +        if ('financial_type_id' == $key) {
 +            $financialTypeID = $item;
 +        }
