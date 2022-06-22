@@ -226,7 +226,7 @@ new file mode 100644
 index 0000000..b9a8b28
 --- /dev/null
 +++ b/CRM/Core/Payment/CBM.php
-@@ -0,0 +1,378 @@
+@@ -0,0 +1,380 @@
 +<?php
 +/*
 + * CBM Plugin Package v4 - Oct 10, 2012
@@ -544,8 +544,10 @@ index 0000000..b9a8b28
 +    array_walk_recursive($params, function ($item, $key) use(& $financialTypeID) {
 +        if ('financial_type_id' == $key) {
 +            $financialTypeID = $item;
++            CRM_Core_Error::debug_log_message('item:' . $item . ' $financialTypeID:' . $financialTypeID, true);
 +        }
 +    });
++    CRM_Core_Error::debug_log_message('$financialTypeID:' . $financialTypeID, true);
 +        $query = "INSERT INTO civicrm_cbm_trxn (cbm_unique_id, auth_url, auth_port, state, amount, contact_id, 
 +        										contribution_id, contributionType_id, invoice_id, component, 
 +        										qfkey, participant_id, event_id, membership_id) 
