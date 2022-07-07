@@ -137,7 +137,7 @@ index 0000000..d7e3390
 +                'qfkey' => array(
 +                    'name' => 'qfkey',
 +                    'type' => CRM_Utils_Type::T_STRING,
-+                    'maxlength' => 64,
++                    'maxlength' => 128,
 +                	//'where' => 'civicrm_civicrm_cbm_trxn.qfkey',
 +                	'required' => true,
 +                ) ,
